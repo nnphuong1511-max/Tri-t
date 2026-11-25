@@ -1,0 +1,613 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Ôn Triết Mác–Lênin</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<style>
+/* Layout: sidebar index (desktop) / sticky chip bar (phone) + one question at a time, always in the teacher's order: Khái niệm → Nội dung chính → Ý nghĩa phương pháp luận */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --surface2:#eef2f7; --fg:#142033; --muted:#55627a; --line:#d9e0ea;
+  --accent:#0b6b63; --accent-fg:#ffffff; --accent-soft:#dff1ee;
+  --mark:#ffe58a; --mark-fg:#142033; --warn:#a35a00; --warn-soft:#fff1dc;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --sans:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e1522; --surface:#151e2e; --surface2:#1b2638; --fg:#e6ebf3; --muted:#9aa8bf; --line:#2a3750;
+  --accent:#5cc7bb; --accent-fg:#06211e; --accent-soft:#12302e;
+  --mark:#7a5f10; --mark-fg:#fff3c4; --warn:#f0b35a; --warn-soft:#33260f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1522; --surface:#151e2e; --surface2:#1b2638; --fg:#e6ebf3; --muted:#9aa8bf; --line:#2a3750;
+  --accent:#5cc7bb; --accent-fg:#06211e; --accent-soft:#12302e;
+  --mark:#7a5f10; --mark-fg:#fff3c4; --warn:#f0b35a; --warn-soft:#33260f; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:400 16px/1.65 var(--sans);margin:0;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+h1,h2,h3{font-family:var(--serif);text-wrap:balance;margin:0;line-height:1.25}
+a{color:var(--accent)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+mark{background:var(--mark);color:var(--mark-fg);padding:0 .2em;border-radius:3px}
+
+.wrap{max-width:1120px;margin:0 auto}
+header.top{padding:28px 0 18px;display:flex;flex-wrap:wrap;gap:12px 24px;align-items:end;justify-content:space-between}
+header.top h1{font-size:clamp(1.7rem,4.5vw,2.4rem);letter-spacing:-.01em}
+header.top p{margin:6px 0 0;color:var(--muted);font-size:.92rem}
+.prog{min-width:220px;flex:0 1 280px}
+.prog .lbl{display:flex;justify-content:space-between;font-size:.82rem;color:var(--muted);margin-bottom:6px}
+.bar{height:8px;background:var(--surface2);border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:28px;align-items:start}
+nav.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);max-height:calc(100vh - 24px);overflow:auto;padding-right:4px}
+nav.side h4{font:600 .72rem/1 var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:18px 0 8px}
+nav.side h4:first-child{margin-top:0}
+nav.side a{display:grid;grid-template-columns:34px 1fr auto;gap:6px;align-items:baseline;padding:7px 10px;border-radius:8px;text-decoration:none;color:var(--fg);font-size:.9rem;line-height:1.4}
+nav.side a:hover{background:var(--surface2)}
+nav.side a[aria-current="page"]{background:var(--accent-soft);color:var(--accent);font-weight:600}
+nav.side a b{font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+nav.side a[aria-current="page"] b{color:var(--accent)}
+nav.side a .chip{display:none}
+nav.side a .ok{color:var(--accent);font-size:.8rem;visibility:hidden}
+nav.side a.done .ok{visibility:visible}
+
+main{min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px 24px}
+.qhead{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+.qhead .eyebrow{font:600 .78rem/1 var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--accent)}
+.qhead h2{font-size:clamp(1.25rem,3vw,1.6rem)}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 14px;font-size:.88rem;font-weight:500}
+.btn:hover{background:var(--surface2)}
+.btn[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+
+.skeleton{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:18px}
+.skeleton div{background:var(--surface2);border-radius:10px;padding:10px 12px;font-size:.84rem;line-height:1.4}
+.skeleton b{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.skeleton .big{background:var(--accent-soft)}
+.skeleton .big b{color:var(--accent)}
+
+.teacher{background:var(--warn-soft);border-radius:10px;padding:12px 14px;margin-bottom:18px;font-size:.92rem}
+.teacher b{color:var(--warn)}
+.teacher ul{margin:6px 0 0;padding-left:18px}
+
+section.blk{margin-top:22px}
+section.blk>h3{font-size:1.1rem;display:flex;gap:10px;align-items:baseline;margin-bottom:10px}
+section.blk>h3 small{font:500 .78rem var(--sans);color:var(--muted)}
+.tag{font:600 .7rem/1 var(--sans);letter-spacing:.07em;text-transform:uppercase;padding:4px 7px;border-radius:5px;background:var(--surface2);color:var(--muted)}
+.tag.key{background:var(--accent);color:var(--accent-fg)}
+.prose p{margin:0 0 10px}
+.prose p:last-child{margin-bottom:0}
+.yi{border-top:1px solid var(--line);padding:14px 0 4px;display:grid;grid-template-columns:44px minmax(0,1fr);gap:4px 12px}
+.yi:first-of-type{border-top:0;padding-top:4px}
+.yi .n{font:700 .78rem/1.9 var(--sans);color:var(--accent);letter-spacing:.04em;white-space:nowrap}
+.yi h4{margin:0 0 4px;font:600 1rem/1.45 var(--sans)}
+.yi p{margin:0 0 8px}
+.yi ul,.prose ul{margin:2px 0 8px;padding-left:20px}
+.yi li,.prose li{margin:3px 0}
+.veil{filter:blur(7px);cursor:pointer;user-select:none;transition:filter .2s;position:relative}
+.veil:hover{filter:blur(5px)}
+.nextprev{display:flex;justify-content:space-between;gap:10px;margin-top:26px;flex-wrap:wrap}
+.hint{font-size:.82rem;color:var(--muted);margin:0 0 14px}
+
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+th{background:var(--surface2);font-weight:600}
+.tw{overflow-x:auto;margin:6px 0 10px}
+
+/* quick table & extra cards */
+.qtable{display:grid;gap:10px}
+.qrow{display:grid;grid-template-columns:54px minmax(0,1fr);gap:4px 14px;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:var(--surface);text-decoration:none;color:inherit}
+.qrow:hover{border-color:var(--accent)}
+.qrow .num{font:700 1rem var(--serif);color:var(--accent)}
+.qrow .t{font-weight:600;font-size:.95rem;line-height:1.45}
+.qrow .k{color:var(--muted);font-size:.88rem;margin-top:3px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.grid2 .card{padding:18px 20px}
+.grid2 h3{font-size:1.05rem;margin-bottom:8px}
+.grid2 ul{margin:0;padding-left:18px;font-size:.92rem}
+.grid2 li{margin:4px 0}
+.rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0}
+.rules>div{background:var(--surface2);border-radius:10px;padding:14px}
+.rules .step{font:600 .72rem var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.rules .big{background:var(--accent-soft)}
+.rules .big .step{color:var(--accent)}
+.rules h3{font-size:1.05rem;margin:4px 0 4px}
+.rules p{margin:0;font-size:.88rem;line-height:1.5}
+.foot{margin-top:32px;font-size:.8rem;color:var(--muted)}
+
+@media (max-width:860px){
+  .layout{grid-template-columns:minmax(0,1fr);gap:14px}
+  nav.side{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;max-height:none;background:var(--bg);padding:8px 2px;border-bottom:1px solid var(--line)}
+  nav.side h4{display:none}
+  nav.side{display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin}
+  nav.side .chips{display:contents}
+  nav.side .chips a{display:block;flex:0 0 auto;padding:7px 12px;border:1px solid var(--line);border-radius:99px;background:var(--surface);white-space:nowrap}
+  nav.side .chips a span.tt,nav.side .chips a .ok{display:none}
+  nav.side .chips a .chip{display:inline}
+  nav.side .chips a.done b::after{content:" ✓";color:var(--accent)}
+  .skeleton,.rules,.grid2{grid-template-columns:minmax(0,1fr)}
+  .card{padding:18px 16px}
+  .yi{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Ôn Triết Mác–Lênin</h1>
+      <p>Học phần 861301 · Đại học Sài Gòn · 14 câu đề cương, viết theo đúng lời dặn của cô</p>
+    </div>
+    <div class="prog" aria-live="polite">
+      <div class="lbl"><span>Đã thuộc</span><span id="progText">0 / 14 câu</span></div>
+      <div class="bar"><i id="progBar"></i></div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="side" id="nav" aria-label="Mục lục"></nav>
+    <main id="view" tabindex="-1"></main>
+  </div>
+  <p class="foot">Nội dung tổng hợp từ đề cương 14 câu, ghi chú lời dặn, 6 bài mẫu, các slide bài giảng và đề cương học phần. Những chỗ ghi “bổ sung” là phần mình viết thêm cho đủ ý, hãy đối chiếu giáo trình trước khi đưa vào bài thi.</p>
+</div>
+
+<script>
+/* ---------- DỮ LIỆU ---------- */
+const Q = [
+{ id:1, short:"Tiền đề khoa học – tự nhiên của chủ nghĩa Mác",
+  title:"Hãy làm rõ tiền đề khoa học – tự nhiên của chủ nghĩa Mác?",
+  skeleton:{a:"Khái niệm / bối cảnh", b:"3 phát minh vĩ đại", c:"Ý nghĩa"},
+  quick:["Bối cảnh: khoa học tự nhiên phát triển mạnh nửa đầu thế kỷ XIX","Bảo toàn và chuyển hóa năng lượng","Học thuyết tế bào","Học thuyết tiến hóa","Ý nghĩa: bác bỏ siêu hình, duy tâm; chứng minh thế giới vật chất tự vận động"],
+  teacher:["Câu 1 và câu 11 cùng nội dung là ba phát minh. Câu 1 hỏi “tiền đề” (nêu đủ 3 phát minh), câu 11 hỏi “ý nghĩa triết học” (nhấn mạnh phần ý nghĩa)."],
+  concept:`<p>Chủ nghĩa Mác ra đời dựa trên ba tiền đề: <mark>kinh tế – xã hội</mark>, <mark>tư tưởng – lý luận</mark> và <mark>khoa học – tự nhiên</mark>. Tiền đề khoa học – tự nhiên là những thành tựu của khoa học tự nhiên, nhất là nửa đầu thế kỷ XIX, khi khoa học chuyển từ sưu tầm tài liệu sang <b>hệ thống hóa, khái quát lý luận</b>. Nổi bật nhất là ba phát minh vĩ đại.</p>`,
+  main:[
+   {h:"Định luật bảo toàn và chuyển hóa năng lượng",p:`<p>Do R. Mayer, J. Joule, E. Lenz… phát hiện vào những năm 1840. Nội dung: năng lượng <mark>không tự sinh ra, không tự mất đi</mark>, chỉ chuyển từ dạng này sang dạng khác với lượng không đổi.</p><p>Chứng minh vận động không tách rời vật chất, các hình thức vận động của vật chất liên hệ và chuyển hóa lẫn nhau.</p>`},
+   {h:"Học thuyết tế bào",p:`<p>Do Schleiden và Schwann xây dựng (1838–1839). Nội dung: mọi cơ thể thực vật và động vật đều cấu tạo từ <mark>tế bào</mark>, tế bào là đơn vị cấu trúc cơ bản của sự sống.</p><p>Chứng minh sự thống nhất về nguồn gốc và cấu tạo của giới hữu cơ, vạch ra mối liên hệ giữa các giới sinh vật.</p>`},
+   {h:"Học thuyết tiến hóa",p:`<p>Do Ch. Darwin nêu trong “Nguồn gốc các loài” (1859). Nội dung: các loài hình thành và phát triển nhờ <mark>biến dị, di truyền và chọn lọc tự nhiên</mark>, từ đơn giản đến phức tạp, từ thấp đến cao.</p><p>Giải thích nguồn gốc các loài bằng nguyên nhân tự nhiên, bác bỏ thuyết sáng tạo và quan niệm các loài bất biến.</p>`}],
+  meaning:`<ul><li>Bác bỏ <mark>tư duy siêu hình</mark> (sự vật bất biến, tách rời) và quan điểm <mark>duy tâm, tôn giáo</mark>.</li><li>Khẳng định thế giới vật chất <mark>tự tồn tại, tự vận động</mark>, các sự vật liên hệ và phát triển.</li><li>Khẳng định tính khoa học của tư duy biện chứng, cung cấp cơ sở khoa học để Mác và Ăngghen xây dựng triết học duy vật biện chứng.</li><li>Bổ sung: triết học phải dựa trên thành tựu khoa học và luôn cập nhật theo khoa học.</li></ul>`
+},
+{ id:2, short:"Vấn đề cơ bản của triết học",
+  title:"Vấn đề cơ bản của triết học là gì? Vì sao đó là vấn đề cơ bản của triết học, hãy làm rõ nội dung chủ yếu của vấn đề này?",
+  skeleton:{a:"Nêu vấn đề cơ bản", b:"Vì sao cơ bản (3 ý) + 2 mặt", c:"Ý nghĩa"},
+  quick:["Quan hệ giữa vật chất và ý thức (tư duy và tồn tại)","Cơ bản vì: quan trọng nhất, quyết định thế giới quan","Mọi hiện tượng đều thuộc vật chất hoặc ý thức","Là cơ sở giải quyết mọi vấn đề khác, phân biệt các trường phái","Mặt 1: cái nào có trước? Mặt 2: có nhận thức được không?"],
+  teacher:["Vì sao là vấn đề cơ bản: <b>3 ý</b>.","Hai mặt của vấn đề: <b>cái nào có trước, cái nào có sau</b> và <b>con người có nhận thức được thế giới không</b>."],
+  concept:`<p>Vấn đề cơ bản của triết học là <mark>quan hệ giữa tư duy và tồn tại, giữa ý thức và vật chất</mark> (Ph. Ăngghen).</p>`,
+  main:[
+   {h:"Vì sao đây là vấn đề cơ bản? (3 ý)",p:`<ul><li>Là vấn đề <mark>quan trọng nhất</mark> của triết học, quyết định quan điểm thế giới quan của mỗi nhà triết học.</li><li>Mọi hiện tượng của thế giới đều thuộc một trong hai lĩnh vực: <mark>vật chất hoặc ý thức</mark>.</li><li>Cách giải quyết vấn đề này là <mark>cơ sở để giải quyết mọi vấn đề khác</mark> và là tiêu chuẩn để phân biệt các trường phái triết học.</li></ul>`},
+   {h:"Mặt thứ nhất: vật chất và ý thức, cái nào có trước, cái nào quyết định cái nào?",p:`<ul><li><b>Chủ nghĩa duy vật</b>: vật chất có trước, quyết định ý thức. Có ba hình thức: duy vật chất phác, duy vật siêu hình, duy vật biện chứng.</li><li><b>Chủ nghĩa duy tâm</b>: ý thức có trước, quyết định vật chất. Gồm duy tâm khách quan và duy tâm chủ quan.</li><li><b>Nhị nguyên luận</b>: vật chất và ý thức song song tồn tại, không cái nào quyết định cái nào (dao động giữa duy vật và duy tâm).</li></ul>`},
+   {h:"Mặt thứ hai: con người có nhận thức được thế giới hay không?",p:`<ul><li><b>Thuyết khả tri</b> (có thể biết): con người hiểu được bản chất sự vật. Hầu hết các nhà duy vật và nhiều nhà duy tâm theo hướng này (ví dụ Hegel).</li><li><b>Thuyết bất khả tri</b> (không thể biết): con người không hiểu được bản chất sự vật (Hume, Kant). Hoài nghi luận là dạng cực đoan, nghi ngờ khả năng đạt chân lý khách quan.</li></ul>`}],
+  meaning:`<p>Bổ sung: việc giải quyết đúng vấn đề cơ bản giúp xác lập <mark>thế giới quan duy vật khoa học</mark> và phương pháp luận đúng đắn trong nhận thức và hành động.</p>`
+},
+{ id:3, short:"Độc lập tương đối và tác động trở lại của ý thức xã hội",
+  title:"Làm rõ quan điểm của triết học Mác–Lênin về tính độc lập tương đối và sự tác động trở lại của ý thức xã hội đối với tồn tại xã hội. Từ đó rút ra ý nghĩa phương pháp luận?",
+  points:"Thường 4 điểm · 5 ý",
+  skeleton:{a:"Khái niệm TTXH, YTXH", b:"5 ý (4 điểm)", c:"Ý nghĩa"},
+  quick:["Lạc hậu hơn tồn tại xã hội","Có thể đi trước tồn tại xã hội","Có tính kế thừa","Các hình thái ý thức xã hội tác động lẫn nhau","Tác động trở lại tồn tại xã hội: thúc đẩy hoặc kìm hãm","Ý nghĩa: xây dựng xã hội mới cả vật chất lẫn tinh thần"],
+  teacher:["Thường chấm <b>4 điểm</b>, nội dung chính gồm <b>5 ý</b> theo đúng thứ tự dưới đây.","Phần ý nghĩa nên viết kể cả khi đề không hỏi rõ."],
+  concept:`<ul><li><b>Tồn tại xã hội</b>: toàn bộ đời sống vật chất và điều kiện sinh hoạt vật chất của xã hội. Yếu tố cơ bản: phương thức sản xuất, môi trường tự nhiên, dân số.</li><li><b>Ý thức xã hội</b>: toàn bộ đời sống tinh thần của xã hội, nảy sinh từ tồn tại xã hội và phản ánh tồn tại xã hội.</li></ul><p>Tồn tại xã hội quyết định ý thức xã hội, nhưng ý thức xã hội có <mark>tính độc lập tương đối</mark>.</p>`,
+  main:[
+   {h:"Ý thức xã hội thường lạc hậu hơn tồn tại xã hội",p:`<ul><li>Ý thức xã hội là sự phản ánh nên <b>xuất hiện sau</b> tồn tại xã hội.</li><li>Do sức mạnh bảo thủ của <b>thói quen, tập quán, truyền thống</b> ăn sâu vào con người.</li><li>Ý thức xã hội gắn với <b>lợi ích của các giai cấp</b>; các giai cấp lỗi thời, phản động duy trì tư tưởng cũ để bảo vệ lợi ích của họ.</li></ul>`},
+   {h:"Ý thức xã hội có thể đi trước tồn tại xã hội",p:`<p>Tư tưởng khoa học tiên tiến, nắm bắt được <mark>quy luật khách quan</mark>, có thể dự báo tương lai và định hướng hoạt động thực tiễn. Đi trước không có nghĩa là thoát ly tồn tại xã hội: nó vẫn dựa trên tồn tại xã hội.</p>`},
+   {h:"Ý thức xã hội có tính kế thừa",p:`<p>Kế thừa là một tính quy luật nội tại của sự phát triển ý thức xã hội. Không kế thừa thì tư tưởng, lý luận, khoa học không thể tiến lên. Kế thừa phải đi cùng <b>lọc bỏ</b>.</p>`},
+   {h:"Các hình thái ý thức xã hội tác động qua lại lẫn nhau",p:`<p>Ý thức chính trị giữ vai trò nổi bật, tác động và chi phối các hình thái khác vì giai cấp thống trị về kinh tế luôn thống trị đời sống xã hội. Tùy hoàn cảnh lịch sử, hình thái khác có thể nổi lên và tác động mạnh đến các hình thái còn lại.</p>`},
+   {h:"Ý thức xã hội tác động trở lại tồn tại xã hội (theo hai hướng)",p:`<ul><li>Ý thức tiến bộ, phản ánh đúng quy luật khách quan, phù hợp lợi ích quần chúng lao động thì <mark>thúc đẩy</mark> tồn tại xã hội phát triển.</li><li>Ý thức lạc hậu, phản động thì <mark>kìm hãm</mark> sự phát triển của tồn tại xã hội.</li></ul>`}],
+  meaning:`<ul><li>Bác bỏ quan điểm siêu hình, máy móc về quan hệ giữa tồn tại xã hội và ý thức xã hội.</li><li>Xây dựng xã hội mới phải tiến hành <mark>đồng thời cả hai mặt vật chất và tinh thần</mark>.</li><li>Thay đổi tồn tại xã hội là điều kiện <b>cơ bản nhất</b> để thay đổi ý thức xã hội cũ, đồng thời phải <b>phát huy vai trò tích cực</b> của ý thức xã hội.</li></ul>`
+},
+{ id:4, short:"Sản xuất vật chất là cơ sở của xã hội",
+  title:"Tại sao sản xuất vật chất là cơ sở của sự tồn tại và phát triển xã hội?",
+  skeleton:{a:"Khái niệm sản xuất vật chất", b:"4 ý", c:"Ý nghĩa"},
+  quick:["Tiền đề duy trì sự tồn tại của con người","Tiền đề của mọi hoạt động lịch sử","Sáng tạo ra đời sống vật chất và tinh thần","Sáng tạo ra bản thân con người"],
+  teacher:["Trả lời đủ <b>4 ý chính</b>."],
+  concept:`<p><b>Sản xuất vật chất</b> là quá trình con người sử dụng công cụ lao động tác động vào tự nhiên, cải biến các dạng vật chất của tự nhiên để tạo ra của cải vật chất, nhằm thỏa mãn nhu cầu tồn tại và phát triển của con người.</p>`,
+  main:[
+   {h:"Là tiền đề duy trì sự tồn tại của con người",p:`<p>Con người muốn tồn tại phải có ăn, mặc, ở, đi lại… Tự nhiên không có sẵn đầy đủ những thứ đó, nên con người phải <mark>lao động sản xuất</mark> để làm ra. Không sản xuất thì xã hội không thể tồn tại.</p>`},
+   {h:"Là tiền đề của mọi hoạt động lịch sử",p:`<p>Mọi hoạt động chính trị, pháp luật, văn hóa, khoa học, nghệ thuật… đều chỉ diễn ra khi đã có sản xuất vật chất. Sản xuất vật chất là <mark>cơ sở hình thành mọi quan hệ xã hội</mark>; phương thức sản xuất thay đổi thì toàn bộ đời sống xã hội thay đổi theo.</p>`},
+   {h:"Sáng tạo ra đời sống vật chất và đời sống tinh thần của xã hội",p:`<p>Sản xuất vật chất tạo ra của cải vật chất, đồng thời tạo điều kiện vật chất cho sản xuất tinh thần, nên là cơ sở của toàn bộ đời sống tinh thần.</p>`},
+   {h:"Sáng tạo ra bản thân con người",p:`<p>Nhờ lao động sản xuất, con người tách khỏi giới động vật, hình thành ngôn ngữ và ý thức, phát triển thể lực và trí lực, đồng thời hình thành các quan hệ xã hội.</p>`}],
+  meaning:`<p>Bổ sung: phải coi <mark>phát triển kinh tế, phát triển lực lượng sản xuất</mark> là nhiệm vụ trung tâm; mọi chủ trương, chính sách xuất phát từ điều kiện kinh tế. Đây là cơ sở lý luận cho việc tập trung phát triển lực lượng sản xuất, đẩy mạnh công nghiệp hóa, hiện đại hóa ở nước ta.</p>`
+},
+{ id:5, short:"Kết cấu xã hội giai cấp",
+  title:"Trình bày kết cấu xã hội giai cấp?",
+  skeleton:{a:"Khái niệm", b:"Đặc điểm + các thành phần", c:"Ý nghĩa"},
+  quick:["Khái niệm: tổng thể các giai cấp, tầng lớp trong một xã hội","Luôn có giai cấp cơ bản và giai cấp/tầng lớp không cơ bản","Giai cấp cơ bản gắn với phương thức sản xuất thống trị","Tầng lớp trung gian luôn bị phân hóa"],
+  teacher:["Khái niệm: tổng thể các giai cấp, tầng lớp trong một xã hội.","Đặc điểm: luôn có <b>giai cấp cơ bản</b> và <b>giai cấp/tầng lớp không cơ bản</b> (trung gian).","Giai cấp cơ bản gắn với phương thức sản xuất thống trị; tầng lớp trung gian luôn bị phân hóa."],
+  concept:`<p><b>Giai cấp</b> (Lênin): những tập đoàn người lớn khác nhau về địa vị trong một hệ thống sản xuất xã hội nhất định, về quan hệ với tư liệu sản xuất, về vai trò trong tổ chức lao động xã hội, về cách thức và phần của cải xã hội được hưởng. Tập đoàn này có thể chiếm đoạt lao động của tập đoàn khác.</p><p><b>Kết cấu xã hội – giai cấp</b> là tổng thể các giai cấp, tầng lớp cùng tồn tại trong một xã hội nhất định, có quan hệ với nhau, do phương thức sản xuất thống trị quy định.</p>`,
+  main:[
+   {h:"Giai cấp cơ bản",p:`<ul><li>Gồm hai giai cấp đối lập nhau, gắn với <mark>phương thức sản xuất thống trị</mark>.</li><li>Là sản phẩm của chế độ kinh tế – xã hội đó.</li><li>Là lực lượng quyết định sự tồn tại và phát triển của xã hội.</li></ul>`},
+   {h:"Giai cấp không cơ bản",p:`<ul><li>Là sản phẩm tàn dư của xã hội trước đó và mầm mống của xã hội kế tiếp.</li><li>Có vai trò ảnh hưởng đến sự tồn tại, phát triển của xã hội.</li></ul>`},
+   {h:"Tầng lớp trung gian",p:`<ul><li>Là sản phẩm của phương thức sản xuất thống trị, kết quả của đấu tranh giai cấp và phân hóa xã hội.</li><li>Luôn <mark>bị phân hóa</mark>, một bộ phận đi theo giai cấp này, bộ phận khác đi theo giai cấp kia.</li></ul>`}],
+  meaning:`<p>Bổ sung: phân tích đúng kết cấu xã hội – giai cấp là cơ sở để xác định lực lượng cách mạng, đồng minh và đối tượng của cách mạng trong từng giai đoạn lịch sử cụ thể.</p>`
+},
+{ id:6, short:"Quan hệ biện chứng giữa vật chất và ý thức",
+  title:"Phân tích mối quan hệ biện chứng giữa vật chất và ý thức, rút ra ý nghĩa phương pháp luận của mối quan hệ biện chứng này?",
+  skeleton:{a:"2 khái niệm: vật chất, ý thức", b:"Vật chất quyết định ý thức; ý thức tác động trở lại", c:"3 ý nghĩa PPL"},
+  quick:["Khái niệm vật chất (Lênin) và ý thức","Vật chất quyết định ý thức","Ý thức có tính độc lập tương đối, tác động trở lại","Ý nghĩa: tôn trọng khách quan","Phát huy tính năng động, sáng tạo của ý thức","Chống chủ quan, duy ý chí"],
+  teacher:["Cấu trúc bài: <b>2 khái niệm → nội dung mối quan hệ → ý nghĩa phương pháp luận</b>.","Nội dung mối quan hệ: vật chất quyết định ý thức; ý thức có tính độc lập tương đối và tác động trở lại.","Ý nghĩa gồm <b>3 ý</b>: tôn trọng tính khách quan; phát huy tính năng động sáng tạo của ý thức; chống chủ nghĩa duy ý chí, chủ quan."],
+  concept:`<p><b>Vật chất</b> (Lênin): “một phạm trù triết học dùng để chỉ thực tại khách quan được đem lại cho con người trong cảm giác, được cảm giác của chúng ta chép lại, chụp lại, phản ánh, và tồn tại không lệ thuộc vào cảm giác”.</p><p><b>Ý thức</b>: thuộc tính, chức năng của bộ óc người, là <mark>hình ảnh chủ quan của thế giới khách quan</mark>, phản ánh một cách chủ động, sáng tạo.</p><ul><li>Nguồn gốc tự nhiên: bộ óc người và sự phản ánh thế giới khách quan vào bộ óc.</li><li>Nguồn gốc xã hội: <b>lao động</b> và <b>ngôn ngữ</b>.</li><li>Kết cấu: tri thức, tình cảm, niềm tin, ý chí…, trong đó tri thức là cốt lõi.</li></ul>`,
+  main:[
+   {h:"Vật chất quyết định ý thức",p:`<ul><li>Vật chất có trước, là <b>nguồn gốc</b> sinh ra ý thức (không có bộ óc và thế giới khách quan thì không có ý thức).</li><li>Vật chất quyết định <b>nội dung, bản chất</b> của ý thức: ý thức là sự phản ánh thế giới vật chất.</li><li>Vật chất quyết định <b>sự vận động, phát triển</b> của ý thức: vật chất thay đổi thì ý thức thay đổi theo.</li></ul>`},
+   {h:"Ý thức có tính độc lập tương đối và tác động trở lại vật chất",p:`<ul><li>Ý thức không tác động trực tiếp lên vật chất mà <mark>thông qua hoạt động thực tiễn</mark> của con người.</li><li>Ý thức phản ánh đúng, dẫn đường cho hành động đúng thì <b>thúc đẩy</b> vật chất phát triển.</li><li>Ý thức phản ánh sai thì <b>kìm hãm</b> sự phát triển.</li><li>Vai trò của ý thức ngày càng lớn khi con người có tri thức khoa học, niềm tin và ý chí.</li></ul>`}],
+  meaning:`<ol><li><b>Tôn trọng tính khách quan</b>: xuất phát từ thực tế khách quan, tôn trọng và hành động theo quy luật khách quan.</li><li><b>Phát huy tính năng động, sáng tạo của ý thức</b>: nâng cao tri thức, rèn luyện ý chí, niềm tin.</li><li><b>Chống chủ nghĩa chủ quan, duy ý chí</b> (lấy ý muốn chủ quan thay cho thực tế khách quan); đồng thời chống thái độ thụ động, trông chờ, bảo thủ, trì trệ.</li></ol>`
+},
+{ id:7, short:"Hai phương pháp: biện chứng và siêu hình",
+  title:"Anh chị hãy giải thích 2 phương pháp triết học? (Biện chứng và siêu hình)",
+  skeleton:{a:"Khái niệm phương pháp", b:"Siêu hình vs biện chứng", c:"Đánh giá"},
+  quick:["Siêu hình: xem xét sự vật tĩnh, tách rời, không phát triển","Có vai trò trong cơ học, hạn chế khi nghiên cứu vận động","Biện chứng: xem xét trong liên hệ, vận động, phát triển","Là công cụ hữu hiệu nhận thức và cải tạo thế giới"],
+  teacher:["<b>Siêu hình</b>: xem xét sự vật ở trạng thái tĩnh, tách rời; có vai trò trong cơ học nhưng hạn chế khi nghiên cứu vận động.","<b>Biện chứng</b>: xem xét trong mối liên hệ, vận động, phát triển; là công cụ hữu hiệu để nhận thức và cải tạo thế giới."],
+  concept:`<p>Phương pháp là cách thức nhận thức và cải tạo thế giới. Trong lịch sử triết học có hai phương pháp đối lập: <b>phương pháp siêu hình</b> và <b>phương pháp biện chứng</b>.</p>`,
+  main:[
+   {h:"Phương pháp siêu hình",p:`<ul><li>Xem xét sự vật ở trạng thái <mark>biệt lập, tĩnh tại</mark>, tách rời nhau, không có liên hệ.</li><li>Cho rằng sự vật không có vận động, không có phát triển; nếu có thì chỉ là tăng giảm về lượng, nguyên nhân từ bên ngoài.</li><li>Thịnh hành ở thế kỷ XVII–XVIII, gắn với sự phát triển của cơ học.</li><li><b>Vai trò</b>: có tác dụng nhất định trong nghiên cứu cơ học, khi cần tách đối tượng ra khỏi liên hệ chung.</li><li><b>Hạn chế</b>: không thể nhận thức đúng thế giới trong tính vận động, phát triển và liên hệ phổ biến.</li></ul>`},
+   {h:"Phương pháp biện chứng",p:`<ul><li>Xem xét sự vật <mark>trong các mối liên hệ</mark> ràng buộc, ảnh hưởng lẫn nhau.</li><li>Xem xét trong trạng thái <mark>vận động, biến đổi</mark>, với khuynh hướng chung là phát triển.</li><li>Nguồn gốc của vận động, phát triển là mâu thuẫn bên trong sự vật.</li><li>Ba hình thức trong lịch sử: biện chứng chất phác cổ đại; biện chứng duy tâm (triết học cổ điển Đức, đỉnh cao là Hegel); <b>biện chứng duy vật</b> (Mác, Ăngghen, Lênin).</li></ul>`},
+   {h:"Bảng so sánh",p:`<div class="tw"><table><thead><tr><th></th><th>Siêu hình</th><th>Biện chứng</th></tr></thead><tbody><tr><td>Liên hệ</td><td>Biệt lập, riêng rẽ</td><td>Ràng buộc, ảnh hưởng lẫn nhau</td></tr><tr><td>Trạng thái</td><td>Tĩnh lặng, bất động</td><td>Vận động, biến đổi</td></tr><tr><td>Phát triển</td><td>Không có</td><td>Khuynh hướng chung là phát triển</td></tr></tbody></table></div>`}],
+  meaning:`<p>Phương pháp biện chứng duy vật là <mark>công cụ hữu hiệu</mark> để nhận thức thế giới và cải tạo thế giới; cần nắm vững để tránh cách nhìn phiến diện, cứng nhắc, bảo thủ trong học tập và thực tiễn.</p>`
+},
+{ id:8, short:"Quy luật thống nhất và đấu tranh của các mặt đối lập",
+  title:"Anh chị làm rõ nội dung quy luật thống nhất và đấu tranh giữa các mặt đối lập và vận dụng vào thực tế trong công cuộc đổi mới ở Việt Nam?",
+  skeleton:{a:"Các khái niệm", b:"Nội dung: mâu thuẫn là nguồn gốc, động lực", c:"Ý nghĩa PPL + vận dụng ở VN"},
+  quick:["Quy luật chỉ ra nguồn gốc, động lực của sự phát triển","Khái niệm: mặt đối lập, mâu thuẫn biện chứng, thống nhất, đấu tranh","Mâu thuẫn là nguồn gốc của vận động, phát triển","Ý nghĩa PPL","Vận dụng: lực lượng tiến bộ theo CNXH với thế lực cản trở; phát triển kinh tế với bảo vệ môi trường"],
+  teacher:["Đây là quy luật chỉ ra <b>nguồn gốc, động lực của sự phát triển</b>.","Nội dung: <b>mâu thuẫn là nguồn gốc của vận động, phát triển</b>.","Cuối bài: ý nghĩa phương pháp luận và <b>vận dụng vào thực tiễn Việt Nam</b>."],
+  concept:`<ul><li><b>Mặt đối lập</b>: những mặt, thuộc tính, khuynh hướng phát triển trái ngược nhau cùng tồn tại trong một sự vật, liên hệ ràng buộc nhau nhưng đồng thời bài trừ nhau.</li><li><b>Mâu thuẫn biện chứng</b>: do hai mặt đối lập liên hệ với nhau trong một chỉnh thể tạo thành.</li><li><b>Thống nhất của các mặt đối lập</b>: sự nương tựa, đòi hỏi có nhau; sự tồn tại của mặt này lấy sự tồn tại của mặt kia làm tiền đề.</li><li><b>Đấu tranh của các mặt đối lập</b>: sự tác động, bài trừ, phủ định lẫn nhau giữa các mặt đối lập.</li></ul>`,
+  main:[
+   {h:"Tính chất của mâu thuẫn",p:`<ul><li><b>Khách quan</b>: tồn tại trong bản chất sự vật, không phụ thuộc ý muốn con người.</li><li><b>Phổ biến</b>: có ở mọi lĩnh vực, mọi sự vật; mỗi sự vật chứa nhiều mâu thuẫn.</li><li><b>Riêng biệt (đa dạng)</b>: mâu thuẫn ở các sự vật khác nhau mang đặc điểm khác nhau, ngay trong một mâu thuẫn cũng biểu hiện khác nhau ở các thời điểm khác nhau.</li></ul>`},
+   {h:"Thống nhất và đấu tranh của các mặt đối lập",p:`<ul><li>Các mặt đối lập luôn vừa <mark>thống nhất</mark>, vừa <mark>đấu tranh</mark>; trong điều kiện nhất định chúng chuyển hóa lẫn nhau.</li><li>Quá trình đấu tranh: từ <b>khác nhau</b> → <b>đối lập</b> → <b>xung đột gay gắt</b>; khi điều kiện chín muồi, hai mặt chuyển hóa, mâu thuẫn được giải quyết.</li><li>Kết quả: sự thống nhất cũ bị phá hủy, sự thống nhất mới hình thành cùng mâu thuẫn mới; sự vật cũ mất đi, sự vật mới ra đời.</li></ul>`},
+   {h:"Mâu thuẫn là nguồn gốc, động lực của vận động và phát triển",p:`<p>Thống nhất là tương đối, tạm thời; <mark>đấu tranh là tuyệt đối</mark>, liên tục. Chính sự đấu tranh giữa các mặt đối lập làm cho sự vật không thể tồn tại vĩnh viễn và luôn vận động, phát triển.</p>`},
+   {h:"Phân loại mâu thuẫn (để vận dụng)",p:`<ul><li>Bên trong – bên ngoài.</li><li>Cơ bản – không cơ bản.</li><li>Chủ yếu – thứ yếu.</li><li>Đối kháng – không đối kháng (trong xã hội).</li></ul>`}],
+  meaning:`<ul><li>Phải <b>tôn trọng mâu thuẫn khách quan</b>, phát hiện và phân tích mâu thuẫn cụ thể (các mặt đối lập, quá trình phát sinh phát triển, vị trí vai trò từng mâu thuẫn).</li><li>Tìm ra <b>phương pháp giải quyết phù hợp</b> với từng loại mâu thuẫn và điều kiện cụ thể; giải quyết bằng đấu tranh, không điều hòa mâu thuẫn, không giải quyết khi điều kiện chưa chín muồi.</li><li>Nắm vững mâu thuẫn chủ yếu để tập trung giải quyết.</li></ul>
+  <p class="hint" style="margin-top:12px">Vận dụng vào công cuộc đổi mới ở Việt Nam (theo lời dặn và slide):</p>
+  <ul><li>Mâu thuẫn giữa <mark>lực lượng tiến bộ đi theo chủ nghĩa xã hội</mark> (vì dân giàu, nước mạnh, xã hội công bằng, dân chủ, văn minh) với các thế lực cản trở, chống phá sự nghiệp cách mạng.</li><li>Mâu thuẫn giữa <mark>phát triển kinh tế và bảo vệ môi trường</mark>: giải quyết bằng phát triển bền vững, không hy sinh môi trường để lấy tăng trưởng.</li><li>Đấu tranh chống “bốn nguy cơ”: tụt hậu xa hơn về kinh tế, chệch hướng xã hội chủ nghĩa, tham nhũng và tệ quan liêu, “diễn biến hòa bình”.</li></ul>`
+},
+{ id:9, short:"Cơ sở hạ tầng và kiến trúc thượng tầng",
+  title:"Anh chị phân tích quy luật về mối quan hệ biện chứng giữa cơ sở hạ tầng và kiến trúc thượng tầng?",
+  skeleton:{a:"Khái niệm CSHT, KTTT", b:"CSHT quyết định KTTT; KTTT tác động trở lại", c:"Ý nghĩa"},
+  quick:["CSHT = toàn bộ quan hệ sản xuất hợp thành cơ cấu kinh tế","KTTT = quan điểm chính trị, pháp quyền, triết học, đạo đức, tôn giáo + thiết chế tương ứng","CSHT quyết định KTTT","KTTT tác động trở lại CSHT","Ý nghĩa: hiểu đúng quan hệ kinh tế – chính trị, không tuyệt đối hóa một phía, cơ sở khoa học của đổi mới"],
+  teacher:["Cấu trúc: <b>CSHT quyết định KTTT</b> → <b>KTTT tác động trở lại</b> → ý nghĩa.","Ý nghĩa: hiểu đúng quan hệ kinh tế – chính trị; không tuyệt đối hóa một phía; là <b>cơ sở khoa học của công cuộc đổi mới</b>."],
+  concept:`<ul><li><b>Cơ sở hạ tầng</b>: toàn bộ những quan hệ sản xuất hợp thành cơ cấu kinh tế của một xã hội nhất định. Được đặc trưng bởi kiểu quan hệ sản xuất thống trị.</li><li><b>Kiến trúc thượng tầng</b>: toàn bộ những quan điểm chính trị, pháp quyền, triết học, đạo đức, tôn giáo… cùng những thiết chế xã hội tương ứng (nhà nước, đảng phái, giáo hội, đoàn thể…) hình thành trên một cơ sở hạ tầng nhất định.</li></ul>`,
+  main:[
+   {h:"Cơ sở hạ tầng quyết định kiến trúc thượng tầng",p:`<ul><li>Mỗi cơ sở hạ tầng sinh ra một kiến trúc thượng tầng tương ứng. Quan hệ kinh tế quyết định các quan hệ chính trị, pháp luật, tư tưởng.</li><li>Giai cấp nào thống trị về kinh tế thì thống trị cả đời sống tinh thần. Mâu thuẫn trong kinh tế quyết định mâu thuẫn trong lĩnh vực tư tưởng.</li><li>Khi cơ sở hạ tầng biến đổi căn bản thì sớm hay muộn kiến trúc thượng tầng cũng biến đổi theo; cơ sở hạ tầng cũ mất đi thì kiến trúc thượng tầng cũ mất theo.</li><li>Một số yếu tố của kiến trúc thượng tầng cũ có thể tồn tại dai dẳng hoặc được giai cấp cầm quyền mới kế thừa.</li></ul>`},
+   {h:"Kiến trúc thượng tầng tác động trở lại cơ sở hạ tầng",p:`<ul><li>Chức năng xã hội: bảo vệ, duy trì, củng cố và phát triển cơ sở hạ tầng đã sinh ra nó.</li><li><b>Nhà nước</b> là yếu tố tác động mạnh nhất vì là bộ máy quyền lực tập trung của giai cấp thống trị kinh tế; các yếu tố khác (triết học, đạo đức, tôn giáo, nghệ thuật) tác động thông qua nhà nước, pháp luật, thiết chế.</li><li>Tác động phù hợp quy luật kinh tế khách quan thì <mark>thúc đẩy</mark> kinh tế phát triển; không phù hợp thì <mark>cản trở</mark>.</li></ul>`}],
+  meaning:`<ul><li>Hiểu đúng quan hệ giữa <b>kinh tế và chính trị</b>.</li><li><b>Không tuyệt đối hóa</b> một phía: không coi nhẹ kiến trúc thượng tầng, cũng không biến kinh tế thành duy nhất quyết định một cách máy móc.</li><li>Là <mark>cơ sở khoa học của công cuộc đổi mới</mark>: đổi mới kinh tế phải đi cùng đổi mới chính trị, củng cố vai trò lãnh đạo của Đảng, xây dựng Nhà nước pháp quyền xã hội chủ nghĩa, phát triển văn hóa.</li></ul>`
+},
+{ id:10, short:"Con người là thực thể sinh học – xã hội",
+  title:"Giải thích quan điểm của chủ nghĩa Mác–Lênin: con người là thực thể sinh học – xã hội?",
+  skeleton:{a:"Khái niệm con người", b:"Mặt sinh học + mặt xã hội", c:"Kết luận / ý nghĩa"},
+  quick:["Mặt sinh học: sản phẩm của tự nhiên, có nhu cầu sinh học, tuân theo quy luật tự nhiên","Mặt xã hội: lao động sản xuất, tuân theo quy luật xã hội","Mặt xã hội giữ vai trò quyết định, bản chất con người là tổng hòa các quan hệ xã hội"],
+  teacher:["<b>Sinh học</b>: sản phẩm của tự nhiên, có nhu cầu sinh học, phải tuân theo quy luật tự nhiên.","<b>Xã hội</b>: hoạt động quan trọng nhất là lao động sản xuất, phải tuân theo quy luật xã hội.","Lưu ý: slide và giáo trình mới gọi là “sinh vật – xã hội – tinh thần” (thêm mặt tinh thần). Đề của cô hỏi “sinh học – xã hội”, nên bài chính viết 2 mặt, mặt tinh thần chỉ nhắc thêm."],
+  concept:`<p>Con người là một thực thể <mark>sinh học – xã hội</mark>: vừa là sản phẩm của tự nhiên, vừa là sản phẩm của xã hội. Hai mặt thống nhất hữu cơ, không tách rời.</p>`,
+  main:[
+   {h:"Mặt sinh học (tự nhiên)",p:`<ul><li>Con người là <b>sản phẩm của giới tự nhiên</b>; thể xác con người trước hết là một vật thể tự nhiên.</li><li>Có những <b>nhu cầu sinh học</b>: ăn, uống, ngủ, nghỉ, duy trì nòi giống, tự vệ… thiếu thì không tồn tại được.</li><li>Phải <b>tuân theo quy luật tự nhiên</b>: trao đổi chất, di truyền và biến dị, tiến hóa…</li><li>Cơ thể người khác về chất so với các vật thể khác: có bộ óc, hệ thần kinh hoàn thiện; nhu cầu tự nhiên của con người ngày càng được xã hội hóa.</li></ul>`},
+   {h:"Mặt xã hội",p:`<ul><li>Muốn tồn tại và phát triển, con người phải <mark>lao động sản xuất</mark> (hoạt động quan trọng nhất). Con người trở thành người nhờ lao động và ngôn ngữ.</li><li>Trong lao động hình thành hai loại quan hệ: con người với tự nhiên (lực lượng sản xuất) và con người với con người (quan hệ sản xuất).</li><li>Con người sinh ra đã gia nhập vào những quan hệ xã hội có sẵn, phải <b>tuân theo quy luật xã hội</b>.</li></ul>`},
+   {h:"Quan hệ giữa hai mặt",p:`<p>Mặt xã hội giữ vị trí trung tâm và <mark>quyết định bản chất con người</mark>. Mác: “trong tính hiện thực của nó, bản chất con người là tổng hòa những quan hệ xã hội” (Luận cương về Phoiơbắc).</p>`}],
+  meaning:`<p>Bổ sung: phải quan tâm đồng thời nhu cầu vật chất và các điều kiện xã hội của con người; xây dựng con người phải gắn với xây dựng và cải tạo các quan hệ xã hội, phát huy yếu tố tích cực của môi trường xã hội.</p>`
+},
+{ id:11, short:"Ý nghĩa triết học của ba phát minh vĩ đại",
+  title:"Anh chị chỉ ra ý nghĩa triết học của ba phát minh vĩ đại trong khoa học tự nhiên?",
+  skeleton:{a:"Nêu 3 phát minh", b:"Nội dung ngắn gọn từng phát minh", c:"Ý nghĩa triết học (trọng tâm)"},
+  quick:["Bảo toàn và chuyển hóa năng lượng","Học thuyết tế bào","Học thuyết tiến hóa","Bác bỏ tư duy siêu hình và duy tâm tôn giáo","Thế giới vật chất tự tồn tại, tự vận động","Khẳng định tính khoa học của tư duy biện chứng"],
+  teacher:["Ba phát minh: <b>định luật bảo toàn và chuyển hóa năng lượng, học thuyết tế bào, học thuyết tiến hóa</b>.","Ý nghĩa: bác bỏ tư duy siêu hình và quan điểm duy tâm tôn giáo; khẳng định thế giới vật chất tự tồn tại, tự vận động; khẳng định tính khoa học của tư duy biện chứng."],
+  concept:`<p>Ba phát minh vĩ đại của khoa học tự nhiên thế kỷ XIX là: <b>định luật bảo toàn và chuyển hóa năng lượng</b>, <b>học thuyết tế bào</b> và <b>học thuyết tiến hóa</b> (xem nội dung chi tiết ở Câu 1).</p>`,
+  main:[
+   {h:"Bác bỏ tư duy siêu hình và quan điểm duy tâm, tôn giáo",p:`<p>Cả ba phát minh cho thấy sự vật không bất biến, không tách rời mà <b>liên hệ, chuyển hóa, phát triển</b>; các loài không do thần linh sáng tạo mà hình thành từ nguyên nhân tự nhiên.</p>`},
+   {h:"Khẳng định thế giới vật chất tự tồn tại, tự vận động",p:`<p>Năng lượng không tự mất đi cũng không tự sinh ra; sinh giới phát triển theo quy luật tự nhiên của nó. Không cần đến một lực lượng siêu nhiên nào.</p>`},
+   {h:"Khẳng định tính khoa học của tư duy biện chứng",p:`<p>Thế giới có liên hệ phổ biến (tế bào, năng lượng), có vận động, phát triển (tiến hóa). Đây là cơ sở khoa học để xây dựng <mark>phép biện chứng duy vật</mark>.</p>`}],
+  meaning:`<p>Ba phát minh là <mark>tiền đề khoa học – tự nhiên</mark> của chủ nghĩa Mác, chứng tỏ triết học duy vật biện chứng phù hợp với thực tiễn khoa học.</p>`
+},
+{ id:12, short:"Nguyên lý về mối liên hệ phổ biến",
+  title:"Phân tích nội dung và rút ra ý nghĩa phương pháp luận của việc nghiên cứu nguyên lý về mối liên hệ phổ biến?",
+  skeleton:{a:"Khái niệm liên hệ", b:"3 tính chất", c:"Quan điểm toàn diện + lịch sử – cụ thể"},
+  quick:["Khái niệm liên hệ, mối liên hệ phổ biến","Tính khách quan","Tính phổ biến","Tính đa dạng, phong phú","Quan điểm toàn diện","Quan điểm lịch sử – cụ thể"],
+  teacher:["Khái niệm liên hệ + tính chất: <b>khách quan, phổ biến, đa dạng phong phú</b>.","Ý nghĩa: <b>quan điểm toàn diện</b> và <b>quan điểm lịch sử – cụ thể</b>."],
+  concept:`<p><b>Liên hệ</b> là sự quy định, tác động qua lại, chuyển hóa lẫn nhau giữa các sự vật, hiện tượng hay giữa các mặt của một sự vật, hiện tượng. <b>Mối liên hệ phổ biến</b> là những mối liên hệ tồn tại ở mọi sự vật, mọi lĩnh vực của thế giới (tự nhiên, xã hội, tư duy).</p>`,
+  main:[
+   {h:"Tính khách quan",p:`<p>Mối liên hệ vốn có của sự vật, tồn tại <mark>bên ngoài và độc lập với ý thức</mark> con người; con người chỉ nhận thức và vận dụng chúng.</p>`},
+   {h:"Tính phổ biến",p:`<p>Mọi sự vật, các bộ phận của sự vật đều liên hệ, gắn bó với nhau; không có sự vật nào tồn tại cô lập. Mối liên hệ thể hiện ở mọi lĩnh vực của thế giới.</p>`},
+   {h:"Tính đa dạng, phong phú",p:`<p>Các sự vật khác nhau thì mối liên hệ khác nhau. Có thể phân loại: bên trong – bên ngoài; cơ bản – không cơ bản; chủ yếu – thứ yếu; trực tiếp – gián tiếp…</p>`}],
+  meaning:`<ol><li><b>Quan điểm toàn diện</b>: xem xét tất cả các mặt cấu tạo nên sự vật, mối liên hệ và tác động qua lại giữa các mặt, giữa sự vật này với sự vật khác; nắm được mối liên hệ chủ yếu, bản chất. Đối lập với quan điểm phiến diện, chủ nghĩa chiết trung và thuật ngụy biện.</li><li><b>Quan điểm lịch sử – cụ thể</b>: chú ý đúng mức đến <mark>hoàn cảnh lịch sử cụ thể</mark> trong đó sự vật sinh ra, vận động, biến đổi và phát triển; không áp dụng máy móc một giải pháp cho mọi hoàn cảnh.</li></ol>`
+},
+{ id:13, short:"Nguồn gốc ra đời của triết học",
+  title:"Anh chị giải thích nguồn gốc ra đời của triết học?",
+  skeleton:{a:"Nguồn gốc nhận thức", b:"Nguồn gốc xã hội", c:"Thời gian, địa điểm"},
+  quick:["Nhận thức: tư duy trừu tượng, khái quát, hệ thống hóa","Xã hội: phân công lao động trí óc – chân tay, giai cấp, nhà nước","Thời gian, địa điểm: Trung Quốc, Ấn Độ, Hy Lạp; thế kỷ VIII–VI TCN"],
+  teacher:["Nguồn gốc <b>nhận thức</b>: khi con người đạt trình độ tư duy trừu tượng, khái quát, hệ thống hóa.","Nguồn gốc <b>xã hội</b>: phân công lao động trí óc – chân tay, phân chia giai cấp, nhà nước ra đời.","Thời gian, địa điểm: phương Đông (Trung Quốc, Ấn Độ) và Hy Lạp cổ đại, thế kỷ VIII–VI TCN."],
+  concept:`<p>Triết học ra đời từ nhu cầu giải thích thế giới bằng lý trí, trong điều kiện nhất định về nhận thức và xã hội.</p>`,
+  main:[
+   {h:"Nguồn gốc nhận thức",p:`<p>Con người đã tích lũy một vốn hiểu biết nhất định, đạt đến trình độ <mark>tư duy trừu tượng, khái quát, hệ thống hóa</mark> để xây dựng các học thuyết, lý luận, thay cho cách giải thích thần thoại và tôn giáo nguyên thủy.</p>`},
+   {h:"Nguồn gốc xã hội",p:`<ul><li>Lao động sản xuất phát triển, xuất hiện của cải dư thừa và chế độ tư hữu.</li><li><mark>Phân công lao động giữa lao động trí óc và lao động chân tay</mark>; hình thành tầng lớp trí thức chuyên nghiên cứu lý luận.</li><li>Xã hội phân chia giai cấp, <b>nhà nước ra đời</b>.</li></ul>`},
+   {h:"Thời gian và địa điểm",p:`<p>Triết học xuất hiện ở các trung tâm văn minh lớn của <b>phương Đông (Trung Quốc, Ấn Độ)</b> và <b>Hy Lạp cổ đại</b>, vào khoảng <mark>thế kỷ VIII–VI trước Công nguyên</mark>.</p>`}],
+  meaning:`<p>Bổ sung: triết học là sản phẩm của lịch sử, gắn với trình độ nhận thức và điều kiện xã hội; nó phát triển cùng sự phát triển của sản xuất, khoa học và đấu tranh giai cấp.</p>`
+},
+{ id:14, short:"Quan hệ biện chứng giữa tồn tại xã hội và ý thức xã hội",
+  title:"Phân tích nội dung mối quan hệ biện chứng giữa tồn tại xã hội và ý thức xã hội?",
+  skeleton:{a:"Khái niệm TTXH, YTXH", b:"TTXH quyết định + 5 ý độc lập tương đối", c:"Ý nghĩa"},
+  quick:["TTXH quyết định YTXH","Lạc hậu hơn","Đi trước","Kế thừa","Tác động qua lại giữa các hình thái","Tác động trở lại TTXH"],
+  teacher:["Câu này gồm Câu 3 cộng thêm phần <b>tồn tại xã hội quyết định ý thức xã hội</b>. Nên học Câu 3 trước rồi thêm phần quyết định vào đầu bài."],
+  concept:`<ul><li><b>Tồn tại xã hội</b>: toàn bộ đời sống vật chất và điều kiện sinh hoạt vật chất của xã hội (phương thức sản xuất, môi trường tự nhiên, dân số).</li><li><b>Ý thức xã hội</b>: toàn bộ đời sống tinh thần của xã hội, gồm quan điểm, tư tưởng, lý luận cùng tình cảm, tâm trạng, truyền thống, thói quen…; nảy sinh từ tồn tại xã hội và phản ánh nó. Ý thức xã hội biểu hiện thông qua ý thức cá nhân.</li><li>Kết cấu ý thức xã hội: ý thức xã hội thông thường – ý thức lý luận; tâm lý xã hội – hệ tư tưởng.</li></ul>`,
+  main:[
+   {h:"Tồn tại xã hội quyết định ý thức xã hội",p:`<ul><li>Đời sống tinh thần hình thành, phát triển trên cơ sở đời sống vật chất; tồn tại xã hội là <b>nguồn gốc</b> của ý thức xã hội.</li><li>Khi tồn tại xã hội, nhất là phương thức sản xuất, biến đổi thì tư tưởng, lý luận, quan điểm chính trị, pháp quyền, đạo đức, văn hóa… <mark>sớm muộn cũng biến đổi theo</mark>.</li><li>Những quan niệm, tư tưởng khác nhau là do điều kiện đời sống vật chất khác nhau quyết định.</li></ul>`},
+   {h:"Ý thức xã hội có tính độc lập tương đối (5 ý)",p:`<ol><li>Thường <b>lạc hậu hơn</b> tồn tại xã hội (do tính bảo thủ của thói quen, tập quán; do lợi ích của các giai cấp lỗi thời).</li><li>Có thể <b>đi trước</b> tồn tại xã hội (tư tưởng khoa học tiên tiến dự báo tương lai).</li><li>Có tính <b>kế thừa</b>, có lọc bỏ.</li><li>Các hình thái ý thức xã hội <b>tác động qua lại</b> lẫn nhau (ý thức chính trị giữ vai trò nổi bật).</li><li><b>Tác động trở lại</b> tồn tại xã hội: thúc đẩy nếu tiến bộ, kìm hãm nếu lạc hậu, phản động.</li></ol>`}],
+  meaning:`<ul><li>Xây dựng xã hội mới phải tiến hành <mark>đồng thời cả tồn tại xã hội và ý thức xã hội</mark>.</li><li>Thay đổi tồn tại xã hội cũ là điều kiện cơ bản để thay đổi ý thức xã hội cũ; đồng thời phát huy vai trò tích cực của ý thức xã hội.</li></ul>`
+}
+];
+
+const BONUS = {
+  title:"Câu vận dụng: quan điểm toàn diện và lịch sử – cụ thể vào học tập",
+  teacher:["Giải thích rõ hai quan điểm trước, rồi mới liên hệ vào học tập, sinh hoạt của bản thân.","Ví dụ phải <b>đúng nội dung lý thuyết</b>, không lấy ví dụ lung tung."],
+  parts:[
+   {h:"Quan điểm toàn diện",p:`<p>Xem xét sự vật trong tất cả các mặt và mối liên hệ của nó. <b>Vận dụng</b>: học đều các môn, không học lệch, tránh phiến diện; kết hợp lý thuyết với thực hành; chăm lo sức khỏe, quan hệ bạn bè, kỹ năng mềm vì tất cả cùng ảnh hưởng đến kết quả học tập.</p>`},
+   {h:"Quan điểm lịch sử – cụ thể",p:`<p>Chú ý hoàn cảnh cụ thể của sự vật. <b>Vận dụng</b>: mỗi môn có đặc thù riêng nên cách học khác nhau (môn lý luận cần hiểu và hệ thống ý, môn thực hành cần làm nhiều); mỗi giai đoạn (đầu kỳ, giữa kỳ, mùa thi) có ưu tiên khác nhau; điều kiện của bản thân (năng lực, thời gian) quyết định kế hoạch học.</p>`}]
+};
+
+/* Bộ 6 câu mẫu (file PDF "Câu 1–6" thầy cho). Đánh số riêng, khác với 14 câu đề cương. */
+const M = [
+{ id:1, short:"Vật chất và ý thức (6 ý + 4 ý)", rel:6,
+  title:"Quan điểm duy vật biện chứng về mối quan hệ giữa vật chất và ý thức",
+  note:["Vật chất quyết định ý thức: <b>6 ý</b>. Tác động tích cực của ý thức trở lại vật chất: <b>4 ý</b>. Ý nghĩa phương pháp luận: <b>2 ý</b>."],
+  blocks:[
+   {label:"Phần 1", key:true, h:"Vật chất quyết định ý thức (6 ý)", items:[
+    ["Vật chất là nguồn gốc của ý thức","Ý thức chỉ tồn tại trong bộ não con người và chỉ ra đời trên cơ sở nguồn gốc tự nhiên và nguồn gốc xã hội. Đó là nguồn gốc vật chất của ý thức."],
+    ["Vật chất quyết định nội dung của ý thức","Ý thức là hình ảnh chủ quan phản ánh thế giới khách quan, nên thế giới khách quan quyết định nội dung của hình ảnh đó."],
+    ["Vật chất quyết định bản chất của ý thức","Ý thức là sự phản ánh sáng tạo thế giới khách quan trên cơ sở hoạt động thực tiễn của con người; phản ánh là thuộc tính cơ bản của vật chất."],
+    ["Vật chất quyết định sự vận động, phát triển của ý thức","Khi thế giới khách quan biến đổi thì những hình ảnh trong đầu óc con người cũng biến đổi theo."],
+    ["Quan hệ giữa nhận thức và thực tiễn","Con người có hai hoạt động là nhận thức và thực tiễn. Thực tiễn là mục đích, động lực, cơ sở và tiêu chuẩn của nhận thức; nhận thức để phục vụ thực tiễn."],
+    ["Biểu hiện trong xã hội","Đời sống vật chất quyết định đời sống tinh thần (đời sống kinh tế quyết định đời sống chính trị)."]]},
+   {label:"Phần 2", key:true, h:"Tác động tích cực của ý thức trở lại vật chất (4 ý)", items:[
+    ["Ý thức có tính độc lập tương đối","Ý thức có tính năng động, sáng tạo, có thể tạo ra hệ thống hình ảnh mà hiện thực chưa có, có đặc trưng và quy luật riêng, dù nó chỉ là hình ảnh."],
+    ["Tác động thông qua hoạt động thực tiễn","Bản thân ý thức không trực tiếp thay đổi thế giới khách quan mà phải thông qua hoạt động thực tiễn của con người để cải tạo vật chất."],
+    ["Ý thức tham gia cả nhận thức lẫn thực tiễn","Trong nhận thức: xác định đối tượng, nắm bắt bản chất và quy luật. Trong thực tiễn: xây dựng mục tiêu, kế hoạch, tìm kiếm lực lượng, động viên ý chí và chỉ đạo thực tiễn, quyết định thành công hay thất bại."],
+    ["Các yếu tố của ý thức","Ý thức gồm tri thức, tình cảm, niềm tin, ý chí… Mỗi yếu tố ảnh hưởng khác nhau, trong đó <mark>tri thức, đặc biệt là tri thức khoa học</mark>, ảnh hưởng mạnh nhất vì phản ánh được bản chất và quy luật của thế giới khách quan."]]}],
+  meaning:`<ol><li>Từ vai trò quyết định của vật chất: phải <mark>xuất phát từ hiện thực khách quan, tôn trọng quy luật khách quan</mark>. Về nhận thức: đánh giá đúng sự vật, đúng bản chất, tìm ra quy luật; không chủ quan áp đặt ý chí cá nhân. Trong hành động: căn cứ vào điều kiện, phương tiện, lực lượng vật chất mình có.</li><li>Từ tác động của ý thức: phải <mark>phát huy tính sáng tạo chủ quan</mark>, không thụ động, chờ đợi, ỷ lại.</li></ol>`
+},
+{ id:2, short:"Nguyên lý về mối liên hệ phổ biến", rel:12,
+  title:"Nguyên lý về mối liên hệ phổ biến và phương pháp luận của nguyên lý",
+  note:["Có <b>3 tính chất</b> và <b>2 quan điểm</b> trong ý nghĩa phương pháp luận.","Ví dụ nên <b>cụ thể, ngắn gọn, không cần giải thích dài</b>."],
+  concept:`<p><b>Mối liên hệ</b>: sự tác động, ảnh hưởng qua lại, chi phối và chuyển hóa lẫn nhau giữa các sự vật, hiện tượng, quá trình (hoặc giữa các bộ phận trong cùng một sự vật, hiện tượng).</p><p><b>Mối liên hệ phổ biến</b>: các mối liên hệ diễn ra ở mọi sự vật, hiện tượng, mọi quá trình, đồng thời cũng diễn ra ở bản thân mỗi sự vật, hiện tượng, trong cả ba lĩnh vực: tự nhiên, xã hội, tư duy.</p>`,
+  blocks:[
+   {label:"Nội dung", key:true, h:"Ba tính chất", items:[
+    ["Tính khách quan","Xuất phát từ chỗ bản chất thế giới là vật chất, tồn tại khách quan, độc lập với ý thức nên các mối liên hệ cũng tồn tại khách quan. <i>VD: liên hệ giữa Trái Đất và Mặt Trời tạo ra ngày và đêm là tất yếu khách quan, con người không bịa ra được.</i>"],
+    ["Tính phổ biến","Các mối liên hệ diễn ra ở mọi lĩnh vực, mọi sự vật, mọi hoàn cảnh không gian, thời gian; có liên hệ giữa sự vật này với sự vật khác, giữa các giai đoạn trong một quá trình, giữa các bộ phận trong lòng sự vật. <i>VD: ong hút mật hoa và giúp hoa thụ phấn, hai thực thể không tồn tại độc lập nếu tách rời nhau.</i>"],
+    ["Tính đa dạng, phong phú","Bắt nguồn từ tính đa dạng của thế giới: mỗi sự vật có nhiều mối liên hệ với tính chất, vị trí, vai trò khác nhau (bên trong – bên ngoài, nguyên nhân – kết quả, chủ yếu – thứ yếu…). <i>VD: để doanh nghiệp phát triển, liên hệ bên trong (chiến lược, nhân sự) giữ vai trò quyết định; liên hệ bên ngoài (đối tác, thời tiết) giữ vai trò hỗ trợ.</i>"]]},
+   {label:"Bổ sung", h:"Liên hệ với phép biện chứng duy vật", items:[
+    ["Kết luận","Phép biện chứng duy vật nghiên cứu những mối liên hệ phổ biến nhất trong tự nhiên, xã hội và tư duy. Sự vật biến đổi theo hoàn cảnh không gian, thời gian nên hình thành những mối liên hệ khác nhau. <i>VD thầy nêu: trong lớp học có liên hệ giữa người học, giảng viên, bạn học; về nhà thì là liên hệ gia đình.</i> Kết luận: các mối liên hệ là khách quan, phổ biến, đa dạng, phong phú, quy định sự vật."]]}],
+  meaning:`<ol><li><b>Quan điểm toàn diện</b>: xem xét tất cả các mặt, các đặc điểm, các mối liên hệ của sự vật, kể cả khâu trung gian, gián tiếp. Đối lập là quan điểm phiến diện, một chiều. <i>VD: đánh giá một quốc gia phát triển không chỉ nhìn GDP mà phải nhìn cả giáo dục, y tế, an sinh xã hội và môi trường.</i></li><li><b>Quan điểm cụ thể – lịch sử</b>: chỉ rõ tính chất, vị trí, vai trò của từng mặt, từng mối liên hệ (phân biệt cơ bản và không cơ bản, sự tác động qua lại giữa chúng) và xem xét sự vật gắn với hoàn cảnh không gian, thời gian xác định. <i>VD: chính sách giãn cách xã hội đúng khi dịch bùng phát mạnh, nhưng sai nếu tiếp tục áp dụng khi dịch đã được kiểm soát.</i></li></ol>
+  <p class="hint" style="margin-top:12px">Liên hệ bản thân (phần mở rộng, thầy không nhắc tới):</p><ul><li>Tư duy toàn diện trong học tập: đánh giá năng lực qua kiến thức, kỹ năng, thái độ, không chỉ nhìn GPA một học kỳ.</li><li>Tư duy lịch sử – cụ thể: cách học hiệu quả ở cấp 3 không thể rập khuôn cho đại học; khi thất bại cần phân tích điều kiện, hoàn cảnh để rút bài học cho từng thời điểm.</li></ul>`
+},
+{ id:3, short:"Quy luật phủ định của phủ định", rel:0,
+  title:"Quy luật phủ định của phủ định, ý nghĩa phương pháp luận của quy luật",
+  note:["Vai trò: một trong ba quy luật của phép biện chứng duy vật, chỉ ra <b>khuynh hướng tiến lên của sự phát triển theo đường xoáy ốc</b>.","Gồm <b>2 khái niệm</b>, <b>2 đặc điểm</b>, <b>3 nội dung chính</b>, <b>3 ý nghĩa</b>."],
+  concept:`<ul><li><b>Phủ định</b>: một sự vật, hiện tượng ra đời đến giai đoạn nhất định thì có sự vật, hiện tượng khác cùng loại ra đời thay thế nó. <i>VD: quả trứng nở thành con gà.</i></li><li><b>Phủ định biện chứng</b>: sự vật phát triển từ thay đổi về lượng chuyển hóa thành thay đổi về chất; đấu tranh giải quyết mâu thuẫn trong lòng sự vật làm cho cái mới tiến bộ thay thế cái cũ lạc hậu, rồi cái mới đó lại bị cái mới hơn thay thế; mỗi lần thay thế chỉ là một giai đoạn. <i>VD: hạt lúa (cái cũ) → cây lúa (phủ định lần 1) → các hạt lúa mới (phủ định lần 2, phủ định của phủ định).</i></li></ul>`,
+  blocks:[
+   {label:"Đặc điểm", h:"Hai đặc điểm của phủ định biện chứng", items:[
+    ["Tính khách quan","Nguồn gốc của cái mới là sự đấu tranh giữa các mặt đối lập ngay trong lòng sự vật. Sự vật khác nhau thì phương thức phủ định khác nhau. <i>VD: hạt lúa thành cây lúa; hoặc bướm đẻ trứng, trứng nở sâu, sâu làm kén rồi thành bướm.</i>"],
+    ["Tính kế thừa","Cái mới ra đời từ trong lòng cái cũ, kế thừa và chọn lọc giá trị tích cực của cái cũ làm tiền đề để phát triển. Phủ định nhưng đồng thời khẳng định những giá trị tích cực đã chọn lọc. <i>VD: tiếng Việt hiện đại thay thế tiếng Việt xưa nhưng giữ lại hệ thống từ vựng và ngữ pháp cốt lõi.</i>"]]},
+   {label:"Nội dung chính", key:true, h:"Ba nội dung chính", items:[
+    ["Phủ định của phủ định","Sự vật tồn tại qua quá trình giải quyết mâu thuẫn, thay đổi lượng dẫn đến thay đổi chất làm cái mới ra đời thay thế nó; ở sự vật mới lại diễn ra quá trình tương tự. Sự phát triển trải qua vô số lần phủ định, trong đó cái phủ định sau phủ định cái phủ định trước (cái trung gian) gọi là phủ định của phủ định. Quá trình này liên tục, vô tận, không có lần phủ định cuối cùng."],
+    ["Tính chu kỳ","Một chu kỳ phát triển phải trải qua ít nhất hai lần phủ định, tức ba hình thái tồn tại. Qua một số lần phủ định, sự vật lặp lại hình thái ban đầu nhưng trên cơ sở cao hơn, hoàn thiện hơn (cây → hạt → cây mới). Phủ định của phủ định là kết thúc của chu kỳ này và mở đầu chu kỳ mới."],
+    ["Tính xoáy ốc","Sự kết hợp giữa tính chất tiến lên qua nhiều lần phủ định và tính chu kỳ tạo nên <mark>đường xoáy ốc</mark> của sự phát triển: dường như quay lại cái ban đầu nhưng không lặp lại nguyên xi."]]}],
+  meaning:`<ol><li>Sự ra đời của cái mới thay thế cái cũ là tất yếu. Cái mới còn non yếu nên phải <mark>phát hiện, ủng hộ, tạo điều kiện</mark> cho nó phát triển; nếu không được bảo vệ, cái mới vẫn có thể bị loại bỏ.</li><li>Phải <mark>kế thừa có chọn lọc</mark>, tránh phủ định sạch trơn hoặc kế thừa máy móc (cái cần giữ thì không giữ, cái cần loại lại giữ); đồng thời cải biến cái cũ cho phù hợp thời kỳ mới.</li><li>Phải thấy <b>tính quanh co</b> của sự phát triển, gồm cả thất bại tạm thời, thụt lùi khi cái mới còn non yếu; căn cứ tính chu kỳ để dự báo xu hướng tương lai. <i>VD: khi kinh doanh hoặc học tập gặp thất bại tạm thời không được nản chí; làm cái mới phải giữ lại kinh nghiệm hay của cái cũ.</i></li></ol>`
+},
+{ id:4, short:"Vai trò của sản xuất vật chất (3 vai trò)", rel:4,
+  title:"Sản xuất vật chất, vai trò của sản xuất vật chất, ý nghĩa phương pháp luận",
+  note:["Bản thầy chia thành <b>3 vai trò</b>. Đề cương của cô (Câu 4) chia thành <b>4 ý</b>. Khi thi, theo cách chia của giảng viên chấm bài của bạn; hai cách chứa cùng nội dung."],
+  concept:`<ul><li><b>Sản xuất</b>: hoạt động đặc trưng riêng có của con người và xã hội loài người, là quá trình hoạt động có mục đích làm biến đổi đối tượng của giới tự nhiên để tạo ra sản phẩm thỏa mãn nhu cầu tồn tại và phát triển.</li><li><b>Sản xuất vật chất</b>: quá trình con người sử dụng công cụ lao động tác động vào tự nhiên, cải biến các dạng vật chất của giới tự nhiên nhằm tạo ra của cải vật chất thỏa mãn nhu cầu tồn tại và phát triển.</li></ul><p>Sản xuất xã hội gồm ba loại hình: sản xuất vật chất, sản xuất tinh thần và sản xuất ra bản thân con người. Trong đó <mark>sản xuất vật chất là nền tảng</mark>.</p>`,
+  blocks:[
+   {label:"Nội dung chính", key:true, h:"Ba vai trò", items:[
+    ["Cơ sở quyết định sự tồn tại và phát triển của xã hội","Tạo ra của cải, tư liệu sinh hoạt phục vụ nhu cầu của xã hội. Không có hoạt động đó xã hội không thể tồn tại và phát triển."],
+    ["Cơ sở hình thành xã hội","Xã hội là hệ thống các mối quan hệ giữa người với người, vốn hình thành từ quan hệ sản xuất trong quá trình sản xuất và tái sản xuất. Trên cơ sở đó, các quan hệ xã hội thuộc đời sống tinh thần mới hình thành."],
+    ["Sáng tạo ra con người","Lao động làm con người thay đổi cấu trúc cơ thể, đi thẳng bằng hai chân, phát ra tiếng nói; nhờ lao động mà hình thành ý thức và ngôn ngữ, biến một loài động vật cao cấp thành con người xã hội."]]}],
+  meaning:`<p>Vì sản xuất vật chất giữ vai trò quyết định nên muốn <mark>nhận thức và thúc đẩy xã hội phát triển</mark> thì phải xuất phát từ việc nhận thức và thay đổi thực trạng nền sản xuất vật chất của xã hội đó.</p>`
+},
+{ id:5, short:"Quy luật QHSX phù hợp với trình độ LLSX", rel:0,
+  title:"Quy luật quan hệ sản xuất phù hợp với trình độ phát triển của lực lượng sản xuất",
+  note:["<b>Lưu ý của thầy</b>: không trả lời khái niệm phương thức sản xuất, lực lượng sản xuất, quan hệ sản xuất. <b>Vào thẳng quy luật.</b>","Nội dung quy luật gồm <b>3 ý</b>; ý thứ hai có <b>3 ý nhỏ</b>."],
+  concept:`<p>Sự tác động biện chứng giữa lực lượng sản xuất (LLSX) và quan hệ sản xuất (QHSX) tạo thành quy luật: <mark>quan hệ sản xuất phải phù hợp với trình độ phát triển của lực lượng sản xuất</mark>.</p>`,
+  blocks:[
+   {label:"Nội dung", key:true, h:"Nội dung quy luật (3 ý)", items:[
+    ["Trình độ phát triển của LLSX","Phản ánh trình độ chinh phục tự nhiên của con người, biểu hiện ở tri thức, kỹ năng, tay nghề người lao động cho đến công cụ lao động, khoa học – công nghệ. Trình độ này quy định tính chất của nền sản xuất: cá nhân hay xã hội. <i>VD: cày gỗ, trâu, một người dùng → tính chất cá nhân; máy gặt đập liên hợp, máy bay phun thuốc cần nhiều người, nhiều ngành phối hợp → tính chất xã hội hóa cao.</i>"],
+    ["Vai trò quyết định của LLSX (3 ý nhỏ)","<ol><li><b>Thống nhất biện chứng giữa LLSX và QHSX</b>: LLSX là nội dung vật chất – kỹ thuật, QHSX là hình thức kinh tế – xã hội giúp các yếu tố của LLSX kết hợp với nhau. Nội dung nào thì hình thức đó, nên QHSX chịu sự chi phối của LLSX từ hình thành, kết cấu đến biến đổi. QHSX phù hợp tạo điều kiện thuận lợi để LLSX phát huy hết khả năng. <i>VD: nông dân có sức lao động, có ruộng đất nhưng không tiếp cận được ruộng thì ruộng bỏ hoang.</i></li><li><b>Xu hướng của sản xuất là luôn tiến lên</b>, nguồn gốc từ sự phát triển của LLSX. Khi LLSX phát triển đến một trình độ nhất định, QHSX cũ không còn thích ứng, mâu thuẫn gay gắt, QHSX từ hình thức thúc đẩy trở thành lực lượng kìm hãm. Xã hội phải xóa bỏ QHSX cũ, thiết lập QHSX mới để mở đường cho LLSX.</li><li><b>Sự vận động của mâu thuẫn</b>: từ phù hợp đến mất phù hợp, mâu thuẫn ngày càng gay gắt, con người xóa bỏ QHSX cũ lập QHSX mới, tái lập sự phù hợp ở mức cao hơn.</li></ol>"],
+    ["Tác động trở lại của QHSX đối với LLSX","QHSX ảnh hưởng đến mục đích xã hội, khuynh hướng phát triển nhu cầu vật chất và tinh thần, chi phối phương thức phân phối của cải. Tác động theo <b>2 xu hướng</b>: phù hợp thì tác động tích cực, thúc đẩy; không phù hợp thì tác động tiêu cực, kìm hãm."]]}],
+  meaning:`<p><b>Về nhận thức</b>: đây là quy luật cơ bản và quan trọng nhất trong hệ thống quy luật chi phối xã hội; muốn hiểu nguồn gốc, nguyên nhân biến đổi lịch sử phải dựa vào quy luật này.</p><p><b>Về thực tiễn</b>: muốn phát triển kinh tế phải bắt đầu từ phát triển LLSX; thay đổi QHSX phải căn cứ khách quan vào trình độ LLSX, tránh chủ quan, duy ý chí; vận dụng sáng tạo, phù hợp hoàn cảnh cụ thể.</p><p><b>Vận dụng ở Việt Nam</b>:</p><ul><li>Quá độ lên chủ nghĩa xã hội từ điểm xuất phát thấp, trình độ sản xuất còn thấp kém, sản xuất nhỏ là phổ biến, đòi hỏi phát triển đồng bộ cả LLSX và QHSX.</li><li>Thực hiện thành công công nghiệp hóa để tạo LLSX tiến bộ; xây dựng và hoàn thiện nền kinh tế thị trường định hướng xã hội chủ nghĩa, tạo lập QHSX phù hợp.</li></ul>`
+},
+{ id:6, short:"Quan điểm về con người (4 mục + 3 ý nghĩa)", rel:10,
+  title:"Quan điểm của triết học Mác–Lênin về con người",
+  note:["Gồm <b>4 mục</b> nội dung và <b>3 ý nghĩa</b>.","Bản thầy gọi là “sinh vật – xã hội”, thống nhất với đề cương 14 câu của cô (Câu 10: sinh học – xã hội)."],
+  blocks:[
+   {label:"Nội dung", key:true, h:"Bốn mục nội dung", items:[
+    ["Con người là thực thể sinh vật – xã hội","Biểu hiện trên đời sống sinh vật, đời sống xã hội, đời sống tâm lý, với ba mối quan hệ: với tự nhiên, với con người khác và với chính mình.<ul><li><b>Phương diện sinh vật</b>: con người là sản phẩm tiến hóa lâu dài của giới tự nhiên, là động vật cao cấp nhất; là một bộ phận của tự nhiên nên phải trao đổi với tự nhiên và tuân theo quy luật tự nhiên (trao đổi chất, di truyền…).</li><li><b>Phương diện xã hội</b>: gắn với vai trò của lao động và ngôn ngữ. Lao động cải biến mặt sinh vật (đứng thẳng, đi bằng hai chân, thay đổi cấu trúc cơ thể), hình thành quan hệ sản xuất rồi quan hệ xã hội; lao động và ngôn ngữ chuyển tâm lý động vật thành ý thức con người.</li></ul><b>Kết luận</b>: con người là sự thống nhất của hai mặt; mặt sinh vật là <mark>tiền đề</mark> (tạo phần bản năng), mặt xã hội là <mark>yếu tố quyết định</mark> (tạo phần “người”, phân biệt với loài vật)."],
+    ["Con người là sản phẩm lịch sử","Con người chịu tác động trong ba mối quan hệ (tự nhiên, xã hội, chính mình). Con người là sản phẩm của lịch sử tiến hóa tự nhiên, lịch sử phát triển xã hội và lịch sử bản thân mình; chính lịch sử đó quy định con người."],
+    ["Con người là chủ thể lịch sử","Con người không chỉ chịu chi phối mà còn là chủ thể chủ động tác động trở lại: biến đổi tự nhiên (tự nhiên ngày càng được “người hóa”), biến đổi quan hệ xã hội, cải cách thể chế để lập xã hội mới, và cải tạo chính bản thân mình."],
+    ["Bản chất con người là tổng hòa các quan hệ xã hội","Là quá trình không ngừng sáng tạo, vận động và hoàn thiện."]]}],
+  meaning:`<ol><li>Khi xem xét con người phải xem cả hai phương diện sinh vật và xã hội, <mark>đặc biệt là phương diện xã hội</mark>.</li><li>Con người là sản phẩm lịch sử, chịu sự chi phối của toàn bộ lịch sử, nên muốn giải phóng con người trước hết phải giải phóng khỏi các quan hệ xã hội trói buộc, đặc biệt là quan hệ kinh tế – chính trị. <i>VD: trong chế độ chiếm hữu nô lệ, chủ nô không coi nô lệ là con người, nên muốn giải phóng nô lệ phải xóa bỏ chế độ chiếm hữu nô lệ.</i></li><li>Con người là chủ thể lịch sử, kết quả hoạt động thực tiễn phụ thuộc vào năng lực, phẩm chất con người, nên phải nâng cao năng lực sáng tạo và bồi dưỡng phẩm chất tốt đẹp (quan tâm y tế, giáo dục…). <b>Ở Việt Nam</b>: Đảng xác định con người là trung tâm, mục tiêu và động lực của công cuộc đổi mới.</li></ol>`
+}
+];
+const REL = {4:[4], 6:[1], 10:[6], 12:[2]}; // câu đề cương → bài mẫu liên quan
+
+const EXTRA = [
+ {t:"Quy luật lượng – chất", l:["<b>Chất</b>: tính quy định khách quan vốn có, là sự thống nhất hữu cơ các thuộc tính làm cho sự vật là nó mà không phải cái khác.","<b>Lượng</b>: tính quy định biểu thị số lượng, quy mô, trình độ, nhịp điệu của vận động, phát triển.","<b>Độ</b>: khoảng giới hạn trong đó chất và lượng thống nhất, thay đổi lượng chưa làm thay đổi căn bản chất.","<b>Điểm nút</b>: thời điểm thay đổi về lượng làm thay đổi căn bản về chất.","<b>Bước nhảy vọt</b>: sự chuyển hóa về chất do thay đổi lượng gây ra. Phân loại: đột biến – dần dần; toàn bộ – cục bộ; cách mạng – tiến hóa (trong xã hội)."]},
+ {t:"Quy luật phủ định của phủ định", l:["<b>Phủ định</b>: thay thế sự vật này bằng sự vật khác.","<b>Phủ định biện chứng</b>: quá trình tự thân vận động, tự thân phủ định, dẫn đến cái mới hoàn thiện hơn, cao hơn, tiến bộ hơn cái cũ.","Tính <b>khách quan</b>: do mâu thuẫn bên trong sự vật (tự thân phủ định).","Tính <b>kế thừa</b>: giữ lại yếu tố tích cực của cái cũ, không phủ định sạch trơn.","Xu hướng phát triển đi theo đường “xoáy ốc”."]},
+ {t:"Nguyên lý về sự phát triển", l:["<b>Phát triển</b>: vận động tiến lên từ thấp đến cao, từ đơn giản đến phức tạp, từ kém hoàn thiện đến hoàn thiện hơn, cái mới ra đời thay thế cái cũ.","Nguồn gốc, động lực: thống nhất và đấu tranh của các mặt đối lập. Cách thức: từ biến đổi về lượng dẫn đến nhảy vọt về chất.","Tính chất: khách quan, phổ biến, đa dạng phong phú; có thể có thụt lùi, quanh co, phức tạp.","Ý nghĩa: xem xét sự vật trong vận động, phát triển; chống chủ quan duy ý chí, bảo thủ trì trệ."]},
+ {t:"Thực tiễn, nhận thức, chân lý", l:["<b>Thực tiễn</b>: toàn bộ hoạt động vật chất có tính lịch sử – xã hội nhằm cải tạo thế giới khách quan (sản xuất vật chất, cải tạo xã hội, thực nghiệm khoa học).","Vai trò của thực tiễn: <b>cơ sở, động lực, mục đích</b> của nhận thức và <b>tiêu chuẩn của chân lý</b>.","Con đường nhận thức: từ trực quan sinh động (cảm giác, tri giác, biểu tượng) đến tư duy trừu tượng (khái niệm, phán đoán, suy luận), rồi trở về thực tiễn.","Chân lý: khách quan, cụ thể; có tính tuyệt đối và tương đối (chân lý tuyệt đối là tổng số các chân lý tương đối).","Nguyên tắc thống nhất lý luận – thực tiễn: chống giáo điều (tuyệt đối hóa lý luận) và chủ nghĩa kinh nghiệm (tuyệt đối hóa thực tiễn)."]},
+ {t:"Lực lượng sản xuất và quan hệ sản xuất", l:["<b>Lực lượng sản xuất</b>: người lao động + tư liệu sản xuất (đối tượng lao động, phương tiện lao động, công cụ lao động). Người lao động là nhân tố hàng đầu, công cụ lao động là thành tố cơ bản.","<b>Quan hệ sản xuất</b>: quan hệ sở hữu tư liệu sản xuất (quyết định), quan hệ tổ chức quản lý sản xuất, quan hệ phân phối sản phẩm.","Quy luật: quan hệ sản xuất phải phù hợp với tính chất và trình độ của lực lượng sản xuất. Lực lượng sản xuất quyết định quan hệ sản xuất; quan hệ sản xuất tác động trở lại (thúc đẩy hoặc kìm hãm).","<b>Phương thức sản xuất</b>: sự thống nhất giữa lực lượng sản xuất ở một trình độ nhất định và quan hệ sản xuất tương ứng."]},
+ {t:"Giai cấp và đấu tranh giai cấp", l:["Giai cấp ra đời do <b>chế độ tư hữu</b> (nguyên nhân trực tiếp) và sự phát triển của lực lượng sản xuất (nguyên nhân sâu xa).","Đấu tranh giai cấp là động lực phát triển của xã hội có giai cấp; là cuộc đấu tranh của bộ phận nhân dân này chống bộ phận khác.","Ba hình thức: đấu tranh kinh tế, chính trị, tư tưởng.","Thời kỳ quá độ lên chủ nghĩa xã hội: đấu tranh giữa con đường xã hội chủ nghĩa và tư bản chủ nghĩa, chống bốn nguy cơ."]},
+ {t:"Cách mạng xã hội", l:["<b>Nghĩa rộng</b>: biến đổi về chất của toàn bộ xã hội, chuyển lên hình thái kinh tế – xã hội cao hơn. <b>Nghĩa hẹp</b>: lật đổ chế độ chính trị lỗi thời, thiết lập chế độ chính trị tiến bộ hơn; giành chính quyền là vấn đề cơ bản.","Nguyên nhân sâu xa: mâu thuẫn giữa lực lượng sản xuất tiến bộ và quan hệ sản xuất lỗi thời.","Điều kiện khách quan (tình thế cách mạng) và nhân tố chủ quan (đường lối đúng, tổ chức, ý chí, nắm bắt thời cơ).","Bạo lực cách mạng là phương pháp tất yếu nhưng là phương tiện, không phải mục đích; không phủ nhận khả năng hòa bình."]},
+ {t:"Quần chúng nhân dân, lãnh tụ, cá nhân", l:["Quần chúng nhân dân là lực lượng sản xuất cơ bản, động lực cơ bản của cách mạng xã hội, là chủ thể sáng tạo văn hóa tinh thần; quyết định sự phát triển của lịch sử.","Lãnh tụ là cá nhân kiệt xuất do phong trào quần chúng tạo nên, có vai trò định hướng, dẫn dắt, tổ chức.","Phải chống tệ sùng bái cá nhân.","Quan hệ cá nhân – xã hội: lợi ích cá nhân và lợi ích cộng đồng; tránh chỉ thấy cá nhân hoặc chỉ thấy xã hội.","Tha hóa con người bắt nguồn từ chế độ tư hữu; giải phóng con người bằng xóa bỏ chế độ sở hữu tư sản, lực lượng nòng cốt là giai cấp vô sản."]}
+];
+
+/* ---------- TRẠNG THÁI ---------- */
+let done = {};
+const KEY = "on-triet-done-v1";
+try { done = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { done = {}; }
+function saveDone(){ try { localStorage.setItem(KEY, JSON.stringify(done)); } catch(e){} }
+let selfTest = false;
+
+const $ = s => document.querySelector(s);
+const view = $("#view"), nav = $("#nav");
+
+/* ---------- ĐIỀU HƯỚNG ---------- */
+function navLink(h, current, b, tt, chip, isDone){
+  return `<a href="#${h}" class="${isDone?"done":""}" ${current===h?'aria-current="page"':""}><b>${b}</b><span class="tt">${tt}</span><span class="ok">✓</span>${chip?`<span class="chip">${chip}</span>`:""}</a>`;
+}
+function buildNav(current){
+  const start = navLink("cach-lam-bai",current,"","Cách làm bài (lời dặn)","Lời dặn");
+  const qLinks = Q.map(q => navLink("cau-"+q.id,current,q.id,q.short,"",done[q.id])).join("");
+  const mLinks = M.map(m => navLink("mau-"+m.id,current,"M"+m.id,m.short,"")).join("");
+  const other = navLink("khung-nhanh",current,"","Khung nhanh 14 câu","Khung nhanh")
+    + navLink("cau-van-dung",current,"","Câu vận dụng","Vận dụng")
+    + navLink("on-them",current,"","Ôn thêm","Ôn thêm");
+  nav.innerHTML = `<h4>Bắt đầu</h4><div class="chips">${start}</div>
+   <h4>14 câu đề cương</h4><div class="chips">${qLinks}</div>
+   <h4>6 bài mẫu của thầy</h4><div class="chips">${mLinks}</div>
+   <h4>Khác</h4><div class="chips">${other}</div>`;
+}
+
+function setProgress(){
+  const n = Object.values(done).filter(Boolean).length;
+  $("#progText").textContent = n + " / " + Q.length + " câu";
+  $("#progBar").style.width = (n / Q.length * 100) + "%";
+}
+
+/* ---------- RENDER ---------- */
+function teacherBox(lines, who){
+  if(!lines || !lines.length) return "";
+  return `<div class="teacher"><b>${who||"Cô dặn"}</b><ul>${lines.map(x=>`<li>${x}</li>`).join("")}</ul></div>`;
+}
+function veilWrap(html){ return `<div class="ans ${selfTest?"veil":""}" ${selfTest?'role="button" tabindex="0" aria-label="Bấm để xem nội dung"':""}>${html}</div>`; }
+
+function renderQuestion(id){
+  const q = Q.find(x=>x.id===id); if(!q) return renderGuide();
+  const prev = Q.find(x=>x.id===id-1), next = Q.find(x=>x.id===id+1);
+  const sk = q.skeleton;
+  const main = q.main.map((m,i)=>`<div class="yi"><div class="n">Ý ${i+1}</div><div><h4>${m.h}</h4>${veilWrap(m.p)}</div></div>`).join("");
+  view.innerHTML = `
+  <article class="card">
+    <div class="qhead">
+      <span class="eyebrow">Câu ${q.id} / ${Q.length}${q.points?" · "+q.points:""}</span>
+      <h2>${q.title}</h2>
+    </div>
+    <div class="toolbar">
+      <button class="btn" id="stBtn" aria-pressed="${selfTest}">Tự kiểm tra (che nội dung)</button>
+      <button class="btn ${done[q.id]?"primary":""}" id="doneBtn" aria-pressed="${!!done[q.id]}">${done[q.id]?"Đã thuộc ✓":"Đánh dấu đã thuộc"}</button>
+      ${(REL[q.id]||[]).map(r=>`<a class="btn" href="#mau-${r}">Xem bài mẫu ${r} của thầy</a>`).join("")}
+    </div>
+    ${selfTest?'<p class="hint">Đọc tiêu đề từng ý rồi tự nhớ nội dung, bấm vào vùng mờ để xem đáp án.</p>':""}
+    <div class="skeleton">
+      <div><b>1 · Mở bài</b>${sk.a}</div>
+      <div class="big"><b>2 · Nội dung chính (nhiều điểm nhất)</b>${sk.b}</div>
+      <div><b>3 · Kết bài</b>${sk.c}</div>
+    </div>
+    ${teacherBox(q.teacher)}
+    <section class="blk"><h3><span class="tag">Phần 1</span> Khái niệm</h3><div class="prose">${veilWrap(q.concept)}</div></section>
+    <section class="blk"><h3><span class="tag key">Phần 2</span> Nội dung chính <small>${q.main.length} ý lớn</small></h3>${main}</section>
+    <section class="blk"><h3><span class="tag">Phần 3</span> Ý nghĩa phương pháp luận <small>luôn viết, ngắn gọn và đúng</small></h3><div class="prose">${veilWrap(q.meaning)}</div></section>
+    <div class="nextprev">
+      ${prev?`<a class="btn" href="#cau-${prev.id}">← Câu ${prev.id}</a>`:"<span></span>"}
+      ${next?`<a class="btn primary" href="#cau-${next.id}">Câu ${next.id} →</a>`:`<a class="btn primary" href="#khung-nhanh">Xem khung nhanh →</a>`}
+    </div>
+  </article>`;
+  $("#stBtn").onclick = () => { selfTest = !selfTest; renderQuestion(id); };
+  $("#doneBtn").onclick = () => { done[q.id] = !done[q.id]; saveDone(); setProgress(); buildNav("cau-"+q.id); renderQuestion(id); };
+  bindVeil();
+}
+function bindVeil(){
+  view.querySelectorAll(".veil").forEach(el=>{
+    const open = () => { el.classList.remove("veil"); el.removeAttribute("role"); el.removeAttribute("tabindex"); };
+    el.addEventListener("click", open, {once:true});
+    el.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); open(); } });
+  });
+}
+
+function renderGuide(){
+  view.innerHTML = `
+  <article class="card">
+    <div class="qhead"><span class="eyebrow">Lời dặn của cô</span><h2>Mỗi câu viết theo 3 bước, dồn điểm vào nội dung chính</h2></div>
+    <div class="rules">
+      <div><span class="step">Bước 1</span><h3>Khái niệm</h3><p>Trình bày khái niệm trước (nếu câu hỏi có khái niệm).</p></div>
+      <div class="big"><span class="step">Bước 2 · nhiều điểm nhất</span><h3>Nội dung chính</h3><p>Phân tích kỹ phần này. Chia ý theo số điểm: câu 3 điểm thì 3 ý chính.</p></div>
+      <div><span class="step">Bước 3</span><h3>Ý nghĩa phương pháp luận</h3><p>Luôn viết, kể cả khi đề không yêu cầu rõ, nhưng ngắn gọn và đúng.</p></div>
+    </div>
+    <div class="teacher"><b>Nhớ thêm</b><ul>
+      <li>Không lấy ví dụ lung tung. Nếu liên hệ thực tiễn thì phải <b>đúng nội dung lý thuyết</b> đang hỏi.</li>
+      <li>Trọng tâm là phần nội dung chính, phân tích cho kỹ.</li>
+      <li>Ý nghĩa phương pháp luận nên viết dù đề không yêu cầu, miễn là ngắn gọn và đúng.</li>
+    </ul></div>
+    <section class="blk"><h3>Mẫu mở bài cho một câu 3 điểm</h3>
+      <div class="prose"><p><b>(Khái niệm)</b> … là … → <b>(Nội dung)</b> Ý 1 … Ý 2 … Ý 3 … → <b>(Ý nghĩa phương pháp luận)</b> Từ đó cần … đồng thời tránh …</p></div></section>
+    <section class="blk"><h3>Bắt đầu ôn</h3>
+      <p class="hint">Mở từng câu ở mục lục. Dùng nút “Tự kiểm tra” để che nội dung và tự nhớ lại, rồi đánh dấu “đã thuộc” để theo dõi tiến độ.</p>
+      <div class="nextprev" style="margin-top:8px"><a class="btn primary" href="#cau-1">Bắt đầu từ Câu 1 →</a><a class="btn" href="#mau-1">6 bài mẫu của thầy</a><a class="btn" href="#khung-nhanh">Khung nhanh 14 câu</a></div></section>
+  </article>`;
+}
+
+function renderMau(id){
+  const m = M.find(x=>x.id===id); if(!m) return renderGuide();
+  const prev = M.find(x=>x.id===id-1), next = M.find(x=>x.id===id+1);
+  const relQ = m.rel ? Q.find(q=>q.id===m.rel) : null;
+  const blocks = (m.blocks||[]).map(b=>`<section class="blk"><h3><span class="tag ${b.key?"key":""}">${b.label}</span> ${b.h}</h3>${b.items.map((it,i)=>`<div class="yi"><div class="n">Ý ${i+1}</div><div><h4>${it[0]}</h4>${veilWrap(it[1].startsWith("<")?it[1]:"<p>"+it[1]+"</p>")}</div></div>`).join("")}</section>`).join("");
+  view.innerHTML = `
+  <article class="card">
+    <div class="qhead"><span class="eyebrow">Bài mẫu ${m.id} / ${M.length} · thầy cho</span><h2>${m.title}</h2></div>
+    <div class="toolbar"><button class="btn" id="stBtn" aria-pressed="${selfTest}">Tự kiểm tra (che nội dung)</button>${relQ?`<a class="btn" href="#cau-${relQ.id}">Xem Câu ${relQ.id} đề cương cô</a>`:""}</div>
+    ${selfTest?'<p class="hint">Đọc tiêu đề từng ý rồi tự nhớ nội dung, bấm vào vùng mờ để xem đáp án.</p>':""}
+    ${teacherBox(m.note,"Thầy dặn")}
+    ${m.concept?`<section class="blk"><h3><span class="tag">Khái niệm</span> Mở đầu</h3><div class="prose">${veilWrap(m.concept)}</div></section>`:""}
+    ${blocks}
+    <section class="blk"><h3><span class="tag">Kết</span> Ý nghĩa phương pháp luận</h3><div class="prose">${veilWrap(m.meaning)}</div></section>
+    <div class="nextprev">
+      ${prev?`<a class="btn" href="#mau-${prev.id}">← Bài mẫu ${prev.id}</a>`:`<a class="btn" href="#cau-14">← Câu 14</a>`}
+      ${next?`<a class="btn primary" href="#mau-${next.id}">Bài mẫu ${next.id} →</a>`:`<a class="btn primary" href="#khung-nhanh">Xem khung nhanh →</a>`}
+    </div>
+  </article>`;
+  $("#stBtn").onclick = () => { selfTest = !selfTest; renderMau(id); };
+  bindVeil();
+}
+
+function renderQuick(){
+  view.innerHTML = `
+  <article class="card">
+    <div class="qhead"><span class="eyebrow">Ôn nhanh</span><h2>Khung ý của 14 câu</h2></div>
+    <p class="hint">Dùng để lướt lại trước giờ thi. Bấm vào một câu để xem bài đầy đủ.</p>
+    <div class="qtable">${Q.map(q=>`<a class="qrow" href="#cau-${q.id}"><span class="num">${q.id}</span><span><span class="t">${q.short}</span><div class="k">${q.quick.join(" · ")}</div></span></a>`).join("")}</div>
+  </article>`;
+}
+
+function renderBonus(){
+  view.innerHTML = `
+  <article class="card">
+    <div class="qhead"><span class="eyebrow">Câu vận dụng theo lời dặn</span><h2>${BONUS.title}</h2></div>
+    ${teacherBox(BONUS.teacher)}
+    ${BONUS.parts.map((p,i)=>`<section class="blk"><h3><span class="tag ${i?"":"key"}">Quan điểm ${i+1}</span> ${p.h}</h3><div class="prose">${p.p}</div></section>`).join("")}
+    <section class="blk"><h3>Cách trình bày</h3><div class="prose"><ul><li>Nêu khái niệm từng quan điểm (xem Câu 12).</li><li>Liên hệ ngắn gọn, đúng yêu cầu của từng quan điểm.</li><li>Kết bằng một câu rút ra bài học cho bản thân.</li></ul></div></section>
+    <div class="nextprev"><a class="btn" href="#cau-12">← Xem Câu 12</a></div>
+  </article>`;
+}
+
+function renderExtra(){
+  view.innerHTML = `
+  <article class="card">
+    <div class="qhead"><span class="eyebrow">Ôn thêm</span><h2>Kiến thức nền trong các slide</h2></div>
+    <p class="hint">Những phần này không nằm trong 14 câu nhưng giúp hiểu sâu hơn và có thể dùng để dẫn giải trong nội dung chính.</p>
+    <div class="grid2">${EXTRA.map(e=>`<div class="card"><h3>${e.t}</h3><ul>${e.l.map(x=>`<li>${x}</li>`).join("")}</ul></div>`).join("")}</div>
+  </article>`;
+}
+
+function route(){
+  const h = (location.hash || "").replace("#","") || "cach-lam-bai";
+  const m = h.match(/^cau-(\d+)$/), mm = h.match(/^mau-(\d+)$/);
+  buildNav(h);
+  if(m) renderQuestion(+m[1]);
+  else if(mm) renderMau(+mm[1]);
+  else if(h==="khung-nhanh") renderQuick();
+  else if(h==="cau-van-dung") renderBonus();
+  else if(h==="on-them") renderExtra();
+  else renderGuide();
+  setProgress();
+  if(m || h!=="cach-lam-bai") window.scrollTo({top:0});
+}
+window.addEventListener("hashchange", route);
+route();
+</script>
+
+</body></html>
